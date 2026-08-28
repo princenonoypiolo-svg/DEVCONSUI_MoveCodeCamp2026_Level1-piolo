@@ -1,21 +1,40 @@
-import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
+import { useCurrentAccount } from "@mysten/dapp-kit";
+import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import PortfolioView from "./views/PortfolioView";
 import "./App.css";
+import { querySuiGraphql } from "./suiGraphql";
 
 function App() {
   const account = useCurrentAccount();
+  const [balance, setBalance] = useState("0.00");
 
-  // Fetch SUI balance
-  const { data: balanceData } = useSuiClientQuery(
-    "getBalance",
-    { owner: account?.address as string },
-    { enabled: !!account, retry: 0 }
-  );
+  useEffect(() => {
+    if (!account) {
+      setBalance("0.00");
+      return;
+    }
+
+    querySuiGraphql<{ address: { balance: { totalBalance: string } } }>(
+      "mainnet",
+      `query ($address: SuiAddress!) {
+        address(address: $address) {
+          balance(coinType: "0x2::sui::SUI") {
+            totalBalance
+          }
+        }
+      }`,
+      { address: account.address },
+    )
+      .then((data) => {
+        const totalBalance = data.address?.balance?.totalBalance ?? "0";
+        setBalance((Number(totalBalance) / 1_000_000_000).toFixed(2));
+      })
+      .catch(() => setBalance("0.00"));
+  }, [account]);
 
   const getSuiBalance = () => {
-    if (!balanceData) return "0.00";
-    return (Number(balanceData.totalBalance) / 1_000_000_000).toFixed(2);
+    return balance;
   };
 
   return (

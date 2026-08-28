@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react"
 import { MAINNET_PORTFOLIO_ID } from "../constants"
+import { querySuiGraphql } from "../suiGraphql"
 
 // ============================================================================
 // CUSTOM HOOK FOR DYNAMIC META TAGS
@@ -132,49 +133,34 @@ const PortfolioView = () => {
       try {
         setIsLoading(true);
         
-        const network = NETWORKS[currentNetwork];
-        
-        const response = await fetch(
-          network.fullnode,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              jsonrpc: '2.0',
-              id: 1,
-              method: 'sui_getObject',
-              params: [
-                objectId,
-                {
-                  showContent: true,
-                  showOwner: true,
-                  showPreviousTransaction: true, // This shows the transaction ID
-                  showStorageRebate: true,
-                  showDisplay: true,
-                  showBcs: false,
-                  showType: true
-                }
-              ]
-            })
-          }
+        const result = await querySuiGraphql<{
+          object: {
+            address: string;
+            previousTransaction: { digest: string } | null;
+            asMoveObject: { contents: { json: Record<string, string> } } | null;
+          } | null;
+        }>(
+          currentNetwork,
+          `query ($objectId: SuiAddress!) {
+            object(address: $objectId) {
+              address
+              previousTransaction { digest }
+              asMoveObject {
+                contents { json }
+              }
+            }
+          }`,
+          { objectId },
         );
 
-        const result = await response.json();
-       
-        if (result.error) {
-          throw new Error(result.error.message || "Failed to fetch from blockchain");
-        }
-        
-        if (result.result?.data) {
+        if (result.object) {
           // Store the transaction ID from the response
-          if (result.result.data.previousTransaction) {
-            setTransactionId(result.result.data.previousTransaction);
+          if (result.object.previousTransaction) {
+            setTransactionId(result.object.previousTransaction.digest);
           }
           
-          if (result.result.data.content?.fields) {
-            const fields = result.result.data.content.fields;
+          const fields = result.object.asMoveObject?.contents.json;
+          if (fields) {
            
             const newPortfolioData = {
               name: fields.name || defaultPortfolioData.name,
