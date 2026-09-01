@@ -1,21 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { SuiClientProvider, WalletProvider } from '@mysten/dapp-kit'
-import { getFullnodeUrl } from '@mysten/sui/client'
+import { WalletProvider, SuiClientProvider } from '@mysten/dapp-kit'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
 
-const networks = {
-  testnet: { url: getFullnodeUrl('testnet') },
-  devnet: { url: getFullnodeUrl('devnet') },
-  mainnet: { url: getFullnodeUrl('mainnet') },
-}
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <SuiClientProvider networks={networks} defaultNetwork="mainnet">
-      <WalletProvider autoConnect={false} enableUnsafeBurner={false}>
-        <App />
-      </WalletProvider>
-    </SuiClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <SuiClientProvider>
+        <WalletProvider autoConnect={false} enableUnsafeBurner={false}>
+          <App />
+        </WalletProvider>
+      </SuiClientProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 )

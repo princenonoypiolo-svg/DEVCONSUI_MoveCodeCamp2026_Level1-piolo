@@ -67,31 +67,29 @@ const useMetaTags = (metadata: {
 // PORTFOLIO DATA CONFIGURATION
 // ============================================================================
 const defaultPortfolioData = {
-  name: "LADY DIANE BAUZON CASILANG",
+  name: "PIOLO, PRINCE LOTTER",
   course: "BS in Information Technology",
-  school: "FEU Institute of Technology",
-  about: "I am a fourth-year IT student and freelance designer who integrates technical troubleshooting with creative insight to deliver innovative, efficient solutions.",
+  school: "Torres Capitol College",
+  about: "For an IT programming major, think of me as your always-available pair-programming partner. I can help you debug stubborn code, optimize algorithms, generate boilerplate syntax, and break down complex backend logic.",
   skills: [
-    "Graphic Design",
-    "UI / UX Design",
-    "Project Management",
-    "Full Stack Development",
-    "Web & App Development"
+    "Pair Programming",
+    "Debugging",
+    "Algorithm Optimization",
+    "Code Generation",
+    "Backend Logic"
   ],
-  linkedin: "https://www.linkedin.com/in/ldcasilang/",
-  github: "https://github.com/ldcasilang",
+  linkedin: "https://www.facebook.com/princelotter.piolo.50",
+  github: "https://github.com/princenonoypiolo-svg",
 }
 
-// Network configuration
+// Network configuration - using GraphQL endpoints (JSON-RPC deprecated)
 const NETWORKS = {
   testnet: {
     name: "Testnet",
-    fullnode: "https://sui-testnet-rpc.publicnode.com",
     explorer: "https://suiscan.xyz/testnet",
   },
   mainnet: {
     name: "Mainnet",
-    fullnode: "https://sui-rpc.publicnode.com",
     explorer: "https://suiscan.xyz/mainnet",
   }
 };

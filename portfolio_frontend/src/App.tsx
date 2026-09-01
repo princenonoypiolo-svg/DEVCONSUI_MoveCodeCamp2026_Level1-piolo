@@ -51,6 +51,11 @@ function App() {
         </div>
       </header>
 
+      <div className="wallet-security-notice" role="note">
+        Enter only your public SUI wallet address. Never paste your recovery phrase,
+        mnemonic, seed phrase, private key, or keystore into this app.
+      </div>
+
       {/* Wallet Status Banner */}
       {account && (
         <div className="wallet-banner">
