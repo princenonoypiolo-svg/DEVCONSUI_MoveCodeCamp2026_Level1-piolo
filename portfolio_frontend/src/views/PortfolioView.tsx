@@ -69,7 +69,7 @@ const useMetaTags = (metadata: {
 const defaultPortfolioData = {
   name: "PIOLO, PRINCE LOTTER",
   course: "BS in Information Technology",
-  school: "Torres Capitol College Inc",
+  school: "torres capitol college Inc",
   about: "For an IT programming major, think of me as your always-available pair-programming partner. I can help you debug stubborn code, optimize algorithms, generate boilerplate syntax, and break down complex backend logic.",
   skills: [
     "Pair Programming",
@@ -127,6 +127,9 @@ const PortfolioView = () => {
   // FETCH DATA FROM BLOCKCHAIN
   // ==========================================================================
   useEffect(() => {
+    // Using default portfolio data - blockchain fetch disabled
+    // Uncomment below to re-enable blockchain fetch
+    /*
     const fetchPortfolioData = async () => {
       try {
         setIsLoading(true);
@@ -185,6 +188,11 @@ const PortfolioView = () => {
     };
 
     fetchPortfolioData();
+    */
+    
+    // Always use default portfolio data
+    setPortfolioData(defaultPortfolioData);
+    setIsLoading(false);
   }, [objectId, currentNetwork]);
 
   // Helper function to truncate transaction ID for display
