@@ -69,7 +69,7 @@ const useMetaTags = (metadata: {
 const defaultPortfolioData = {
   name: "PIOLO, PRINCE LOTTER",
   course: "BS in Information Technology",
-  school: "Torres Capitol College",
+  school: "Torres Capitol College Inc",
   about: "For an IT programming major, think of me as your always-available pair-programming partner. I can help you debug stubborn code, optimize algorithms, generate boilerplate syntax, and break down complex backend logic.",
   skills: [
     "Pair Programming",
